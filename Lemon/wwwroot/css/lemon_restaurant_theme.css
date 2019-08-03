@@ -57,20 +57,14 @@ body {
     line-height: 50px;
 }
 
-.background-image {
-    background-image: url(../img/lemon_background.jpg);
-    height: 500px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
 .default-background {
-    background-size: cover;
+    background-image: url(../img/lemon_background.jpg);
+    height: auto;
     background-position: center;
-    background-repeat: no-repeat;
-    background-color: #cccc;
+    background-repeat: repeat;
+    background-size: cover;
     opacity: 0.95;
+    background-color: #cccc;
 }
 
 .white-background {
