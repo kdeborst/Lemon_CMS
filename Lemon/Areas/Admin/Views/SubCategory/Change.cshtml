@@ -2,23 +2,25 @@
 @using Lemon.Extensions
 
 @{
-    ViewData["Title"] = "Nieuwe Subcategorie Toevoegen";
+    ViewData["Title"] = "Subcategorie Wijzigen";
     Layout = "~/Views/Shared/_Layout.cshtml";
 };
 
-<div class="white-background row">
+<div class="border white-background row">
     <div class="col-8">
-        <h2 class="text-warning">Nieuwe Subcategorie Toevoegen</h2>
+        <h2 class="text-warning">Subcategorie Wijzigen</h2>
         <br />
-        <form asp-action="Create">
+        <form asp-action="Change">
             <partial name="_StatusMessage" model="Model.StatusMessage" />
+            <input type="hidden" asp-for="SubCategory.CategoryId" />
+            <input type="hidden" asp-for="SubCategory.Id" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group row">
                 <div class="col-3">
                     <label class="col-form-label" asp-for="SubCategory.CategoryId"></label>
                 </div>
                 <div class="col-9 ">
-                    <select id="ddlCategorylist" asp-for="SubCategory.CategoryId" asp-items="Model.CategoryList.ToSelectListItem(Model.SubCategory.CategoryId)" class="form-control"></select>
+                    <select id="ddlCategorylist" disabled asp-for="SubCategory.CategoryId" asp-items="Model.CategoryList.ToSelectListItem(Model.SubCategory.CategoryId)" class="form-control"></select>
                 </div>
             </div>
             <div class="form-group row">
@@ -32,7 +34,7 @@
             </div>
             <div class="form-group row">
                 <div class="col-9 offset-3">
-                    <partial name="_AddOrBackButtonPartial" />
+                    <partial name="_ChangeOrBackButtonPartial" model="Model.SubCategory.Id" />
                 </div>
             </div>
         </form>
@@ -41,16 +43,19 @@
         @if (Model.SubCategoryList.Count() > 0 )
         {
             <h2 class="text-warning">Bestaande Subcategorieën</h2>
-            <br />
+            <br/>
             <div id="SubCategoryList">
                 <ul class="list-group"></ul>
             </div>
         }
     </div>
+    
 </div>
 
 @section Scripts {
+    
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    
     <script>
         function updateSubCategoryList() {
             var categorySelected = document.getElementById("ddlCategorylist").value;
@@ -77,8 +82,5 @@
             updateSubCategoryList();
         });
 
-        $("#ddlCategorylist").on("change", function () {
-            updateSubCategoryList();
-        });
     </script>
 }

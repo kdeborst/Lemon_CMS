@@ -19,19 +19,23 @@ namespace Lemon.Areas.Admin.Controllers
         [TempData]
         public string StatusMessage { get; set; }
 
+
+        //CONSTRUCTOR
         public SubCategoryController(ApplicationDbContext database)
         {
             _database = database;
         }
 
-        //RETRIEVE ALL SUBCATEGORIES
+
+        //LOAD VIEW: INDEX - OVERVIEW EXISTING SUBCATEGORIES
         public async Task<IActionResult> Index()
         {
-            var subCategories = await _database.SubCategory.Include(s=>s.Category).ToListAsync();
+            var subCategories = await _database.SubCategory.Include(s => s.Category).ToListAsync();
             return View(subCategories);
         }
 
-        //LOAD CREATE SUBCATEGORY VIEW
+
+        //LOAD VIEW: CREATE SUBCATEGORY
         public async Task<IActionResult> Create()
         {
             SubCategoryAndCategoryViewModel model = new SubCategoryAndCategoryViewModel()
@@ -44,7 +48,8 @@ namespace Lemon.Areas.Admin.Controllers
             return View(model);
         }
 
-        //ADD SUBCATEGORY TO DB
+
+        //CREATE: SUBCATEGORY IN DB
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SubCategoryAndCategoryViewModel model)
@@ -52,10 +57,10 @@ namespace Lemon.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var checkExistenceSubCategory = _database.SubCategory.Include(s => s.Category).Where(s => s.Name == model.SubCategory.Name && s.Category.Id == model.SubCategory.CategoryId);
-                
-                if(checkExistenceSubCategory.Count() > 0)
+
+                if (checkExistenceSubCategory.Count() > 0)
                 {
-                    StatusMessage = "Error: " + checkExistenceSubCategory.First().Category.Name + " bestaat al! Gebruik een andere naam voor je subcategorie.";
+                    StatusMessage = "Error: de ingevoerde subcategorie bestaat al in " + checkExistenceSubCategory.First().Category.Name + "! Gebruik een andere naam.";
                 }
                 else
                 {
@@ -76,7 +81,8 @@ namespace Lemon.Areas.Admin.Controllers
             return View(modelVM);
         }
 
-        //RETRIEVE LIST OF EXISTING SUBCATEGORIES FOR OVERVIEW
+
+        //RETURN LIST: EXISTING SUBCATEGORIES
         [ActionName("GetSubCategory")]
         public async Task<IActionResult> GetSubCategory(int id)
         {
@@ -85,5 +91,116 @@ namespace Lemon.Areas.Admin.Controllers
 
             return Json(new SelectList(subCategories, "Id", "Name"));
         }
+
+
+        //LOAD VIEW: SUBCATEGORY DETAILS
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                NotFound();
+            }
+
+            var subCategory = await _database.SubCategory.Include(s => s.Category).SingleOrDefaultAsync(m => m.Id == id);
+
+            if (subCategory == null)
+            {
+                NotFound();
+            }
+
+            return View(subCategory);
+        }
+
+
+        //LOAD VIEW: CHANGE SUBCATEGORY
+        public async Task<IActionResult> Change(int? id)
+        {
+            if (id == null)
+            {
+                NotFound();
+            }
+
+            var subCategory = await _database.SubCategory.SingleOrDefaultAsync(m => m.Id == id);
+
+            if (subCategory == null)
+            {
+                NotFound();
+            }
+
+            SubCategoryAndCategoryViewModel model = new SubCategoryAndCategoryViewModel()
+            {
+                CategoryList = await _database.Category.ToListAsync(),
+                SubCategory = subCategory,
+                SubCategoryList = await _database.SubCategory.OrderBy(p => p.Name).Select(p => p.Name).Distinct().ToListAsync()
+            };
+
+            return View(model);
+        }
+
+
+        //UPDATE: SUBCATEGORY IN DB
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Change(SubCategoryAndCategoryViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var checkExistenceSubCategory = _database.SubCategory.Include(s => s.Category).Where(s => s.Name == model.SubCategory.Name && s.Category.Id == model.SubCategory.CategoryId);
+
+                if (checkExistenceSubCategory.Count() > 0)
+                {
+                    StatusMessage = "Error: de ingevoerde subcategorie bestaat al in " + checkExistenceSubCategory.First().Category.Name + "! Gebruik een andere naam.";
+                }
+                else
+                {
+                    var retrievedSubCategory = await _database.SubCategory.FindAsync(model.SubCategory.Id);
+                    retrievedSubCategory.Name = model.SubCategory.Name;
+                    await _database.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            SubCategoryAndCategoryViewModel modelVM = new SubCategoryAndCategoryViewModel()
+            {
+                CategoryList = await _database.Category.ToListAsync(),
+                SubCategory = model.SubCategory,
+                SubCategoryList = await _database.SubCategory.OrderBy(p => p.Name).Select(p => p.Name).ToListAsync(),
+                StatusMessage = StatusMessage
+            };
+
+            return View(modelVM);
+        }
+
+
+        //LOAD VIEW: DELETE SUBCATEGORY
+        public async Task<IActionResult> Remove(int? id)
+        {
+            if (id == null)
+            {
+                NotFound();
+            }
+
+            var subCategory = await _database.SubCategory.Include(s => s.Category).SingleOrDefaultAsync(m => m.Id == id);
+
+            if (subCategory == null)
+            {
+                NotFound();
+            }
+
+            return View(subCategory);
+        }
+
+
+        //REMOVE: SUBCATEGORY FROM DB
+        [HttpPost, ActionName("Remove")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmRemove(int id)
+        {
+            var subCategory = await _database.SubCategory.SingleOrDefaultAsync(m => m.Id == id);
+            _database.SubCategory.Remove(subCategory);
+            await _database.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

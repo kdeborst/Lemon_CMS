@@ -19,19 +19,19 @@ namespace Lemon.Areas.Admin.Controllers
             _database = database;
         }
 
-        //RETRIEVE ALL CATEGORIES
+        //LOAD VIEW: INDEX - ALL CATEGORIES
         public async Task<IActionResult> Index()
         {
             return View(await _database.Category.ToListAsync());
         }
 
-        //LOAD CREATE CATEGORY VIEW
+        //LOAD VIEW: CREATE CATEGORY
         public IActionResult Create()
         {
             return View();
         }
 
-        //ADD CATEGORY TO DB
+        //ADD: CATEGORY TO DB
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category category)
@@ -47,7 +47,7 @@ namespace Lemon.Areas.Admin.Controllers
             return View(category);
         }
 
-        //LOAD CATEGORY DETAILS VIEW
+        //LOAD VIEW: CATEGORY DETAILS
         public async Task<IActionResult> Details(int ? id)
         {
             if (id == null)
@@ -65,7 +65,7 @@ namespace Lemon.Areas.Admin.Controllers
             return View(category);
         }
 
-        //LOAD CREATE CATEGORY VIEW
+        //LOAD VIEW: CREATE CATEGORY
         public async Task<IActionResult> Change(int ? id)
         {
             if(id == null)
@@ -99,7 +99,7 @@ namespace Lemon.Areas.Admin.Controllers
             return View(category);
         }
 
-        //LOAD VIEW & PASS REMOVE CATEGORY OPTION
+        //LOAD VIEW: REMOVE CATEGORY
         public async Task<IActionResult> Remove(int ? id)
         {
             if (id == null)
@@ -117,7 +117,7 @@ namespace Lemon.Areas.Admin.Controllers
             return View(category);
         }
 
-        //REMOVE CATEGORY IN DB
+        //REMOVE: CATEGORY FROM DB
         [HttpPost, ActionName("Remove")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ConfirmRemove(int id)
