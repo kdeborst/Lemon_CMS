@@ -1,0 +1,70 @@
+﻿@model Lemon.Models.Coupon
+
+@{
+    ViewData["Title"] = "Coupon Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="border white-background row">
+    <div class="col-8">
+        <h2 class="text-warning">Menu & Food Item Details</h2>
+        <div class="col-10 border">
+            <br />
+            @{
+                var base64 = Convert.ToBase64String(Model.Picture);
+                var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
+            }
+            <img src="@imgsrc" style="height: 50%; width: 50%;" />
+            <br />
+        </div>
+        <div class="col-12 pt-4">
+            <fieldset disabled>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label class="col-form-label" asp-for="Name"></label>
+                    </div>
+                    <div class="col-8 ">
+                        <input class="form-control" asp-for="Name" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label class="col-form-label" asp-for="CouponType"></label>
+                    </div>
+                    <div class="col-8 ">
+                        <select class="form-control" asp-for="CouponType" asp-items="Html.GetEnumSelectList<Coupon.ECouponType>()"></select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label class="col-form-label" asp-for="Discount"></label>
+                    </div>
+                    <div class="col-8 ">
+                        <input class="form-control" asp-for="Discount" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label class="col-form-label" asp-for="MinimumAmount"></label>
+                    </div>
+                    <div class="col-8 ">
+                        <input class="form-control" asp-for="MinimumAmount" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label class="col-form-label" asp-for="IsActive"></label>
+                    </div>
+                    <div class="col-8 ">
+                        <input class="form-control" type="checkbox" asp-for="IsActive" />
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-12">
+            <div class="col-8 offset-2">
+                <partial name="_AlterDetailsOrBackButtonPartial" model="Model.Id" />
+            </div>
+        </div>
+    </div>
+</div>
