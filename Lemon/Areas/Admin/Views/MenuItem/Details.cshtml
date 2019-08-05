@@ -1,0 +1,95 @@
+﻿@model Lemon.Models.ViewModels.MenuItemViewModel
+
+@{
+    ViewData["Title"] = "Menu & Food Item Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="border white-background row">
+        <div class="col-8">
+            <h2 class="text-warning">Menu & Food Item Details</h2>
+            <br />
+            <fieldset disabled>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label class="col-form-label" asp-for="MenuItem.Name"></label>
+                    </div>
+                    <div class="col-8 ">
+                        <input class="form-control" asp-for="MenuItem.Name" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label class="col-form-label" asp-for="MenuItem.Description"></label>
+                    </div>
+                    <div class="col-8 ">
+                        @Html.TextAreaFor(m => m.MenuItem.Description)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label class="col-form-label" asp-for="MenuItem.Price"></label>
+                    </div>
+                    <div class="col-8 ">
+                        <input class="form-control" asp-for="MenuItem.Price" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label class="col-form-label" asp-for="MenuItem.CategoryId"></label>
+                    </div>
+                    <div class="col-8 ">
+                        <input class="form-control" asp-for="MenuItem.Category.Name" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label class="col-form-label" asp-for="MenuItem.SubCategoryId"></label>
+                    </div>
+                    <div class="col-8 ">
+                        <input class="form-control" asp-for="MenuItem.SubCategory.Name" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label class="col-form-label" asp-for="MenuItem.Spiciness"></label>
+                    </div>
+                    <div class="col-8 ">
+                        <select asp-for="MenuItem.Spiciness" asp-items="Html.GetEnumSelectList<MenuItem.ESpicinessScale>()" class="form-control"></select>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-3 ">
+            <h2 class="text-warning">Afbeelding Gerecht</h2>
+            <br />
+            <img src="@Model.MenuItem.Image" style="border-radius: 5px; width: 100%; border: 1px solid #bbb9b9" />
+        </div>
+        <div class="col-8">
+            <div class="col-8 offset-2">
+                <partial name="_AlterDetailsOrBackButtonPartial" model="Model.MenuItem.Id" />
+            </div>
+        </div>
+    </div>
+
+
+
+@section Scripts{
+
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: "lists",
+            toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist",
+            menubar: 'edit format',
+            readonly: 1
+        });
+    </script>
+
+    <script>
+        tinymce.init({
+            selector: 'textarea'
+        });
+    </script>
+
+}
