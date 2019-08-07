@@ -1,0 +1,61 @@
+﻿@page
+@model ExternalLoginModel
+@{
+    ViewData["Title"] = "Account Registreren";
+}
+
+<h1 class="text-warning">@ViewData["Title"]</h1>
+<h4>Koppel je @Model.LoginProvider account.</h4>
+<hr />
+<p class="text-success col-md-6 text-justify">
+    Success!! Onze systemen hebben uw gegevens vanuit <strong>@Model.LoginProvider</strong> overgenomen.
+    Wilt u zo vriendelijk zijn om de rest van de gegevens nog even aan te vullen? Dan bent u er in ieder geval van 
+    verzekerd dat uw bestelling op het juiste adres geleverd wordt. Klik vervolgens op registreren om in te loggen.
+</p>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="col-form-label" asp-for="Input.Name"></label>
+                <input class="form-control" asp-for="Input.Name" />
+                <span class="text-danger" asp-validation-for="Input.Name"></span>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" asp-for="Input.Email"></label>
+                <input class="form-control" asp-for="Input.Email" />
+                <span class="text-danger" asp-validation-for="Input.Email"></span>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" asp-for="Input.Address"></label>
+                <input class="form-control" asp-for="Input.Address" />
+                <span class="text-danger" asp-validation-for="Input.Address"></span>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" asp-for="Input.Postcode"></label>
+                <input class="form-control" asp-for="Input.Postcode" />
+                <span class="text-danger" asp-validation-for="Input.Postcode"></span>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" asp-for="Input.City"></label>
+                <input class="form-control" asp-for="Input.City" />
+                <span class="text-danger" asp-validation-for="Input.City"></span>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" asp-for="Input.Phone"></label>
+                <input class="form-control" asp-for="Input.Phone" />
+                <span class="text-danger" asp-validation-for="Input.Phone"></span>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-warning form-control">Registreren</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

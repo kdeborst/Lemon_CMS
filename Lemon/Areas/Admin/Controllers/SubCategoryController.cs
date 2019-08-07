@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Lemon.Data;
 using Lemon.Models;
 using Lemon.Models.ViewModels;
+using Lemon.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Lemon.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.ManagerUser)]
     public class SubCategoryController : Controller
     {
         private readonly ApplicationDbContext _database;

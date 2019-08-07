@@ -1,33 +1,76 @@
 ﻿@page
 @model RegisterModel
+@using Lemon.Utilities
+
 @{
-    ViewData["Title"] = "Registreren";
+    ViewData["Title"] = "Account Registreren";
 }
 
 <h1 class="text-warning">@ViewData["Title"]</h1>
-
 <div class="row">
-    <div class="col-md-4">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h4>Een Nieuw Account Registreren.</h4>
+    <div class="col-md-5">
+        <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
+            <h4>Een nieuw account aanmaken</h4>
             <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                <label class="col-form-label" asp-for="Input.Name"></label>
+                <input class="form-control" placeholder="Accountnaam" asp-for="Input.Name" />
+                <span class="text-danger" asp-validation-for="Input.Name"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Password">Wachtwoord</label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                <label class="col-form-label" asp-for="Input.Email"></label>
+                <input class="form-control" placeholder="E-Mail" asp-for="Input.Email" />
+                <span class="text-danger" asp-validation-for="Input.Email"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.ConfirmPassword">Bevestig Wachtwoord</label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                <label class="col-form-label" asp-for="Input.Address"></label>
+                <input class="form-control" placeholder="Adresgegevens" asp-for="Input.Address" />
+                <span class="text-danger" asp-validation-for="Input.Address"></span>
             </div>
-            <button type="submit" class="btn btn-warning">Registreren</button>
+            <div class="form-group">
+                <label class="col-form-label" asp-for="Input.Postcode"></label>
+                <input class="form-control" placeholder="Voorbeeld: 1234AB" asp-for="Input.Postcode" />
+                <span class="text-danger" asp-validation-for="Input.Postcode"></span>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" asp-for="Input.City"></label>
+                <input class="form-control" placeholder="Stad" asp-for="Input.City" />
+                <span class="text-danger" asp-validation-for="Input.City"></span>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" asp-for="Input.Phone"></label>
+                <input class="form-control" placeholder="Voorbeeld: 0612345678" asp-for="Input.Phone" />
+                <span class="text-danger" asp-validation-for="Input.Phone"></span>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" asp-for="Input.Password">Wachtwoord</label>
+                <input class="form-control" placeholder="Wachtwoord" asp-for="Input.Password" />
+                <span class="text-danger" asp-validation-for="Input.Password"></span>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" asp-for="Input.ConfirmPassword">Bevestig Wachtwoord</label>
+                <input class="form-control" placeholder="Bevestig Wachtwoord" asp-for="Input.ConfirmPassword" />
+                <span class="text-danger" asp-validation-for="Input.ConfirmPassword"></span>
+            </div>
+
+            @if (User.IsInRole(SD.ManagerUser))
+            {
+                <div class="form-group">
+                    <label class="col-form-label">Rol Medewerker</label>
+                    <input type="radio" name="rdUserRole" value="@SD.ManagerUser" checked /> @SD.ManagerUser
+                    <input type="radio" name="rdUserRole" value="@SD.KitchenUser" checked /> @SD.KitchenUser
+                    <input type="radio" name="rdUserRole" value="@SD.FrontDeskUser" checked /> @SD.FrontDeskUser
+                </div>
+            }
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-warning form-control">Registreren</button>
+            </div>
+            <div class="form-group">
+                <p><a class="text-muted" id="forgot-password" asp-page="./ForgotPassword">Wachtwoord vergeten? Herstel je wachtwoord</a></p>
+                <p><a class="text-muted" asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Heb je al een account? Ga naar Inloggen</a></p>
+            </div>
         </form>
     </div>
 </div>

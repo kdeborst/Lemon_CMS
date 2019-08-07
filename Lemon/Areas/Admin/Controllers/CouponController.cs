@@ -5,12 +5,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Lemon.Data;
 using Lemon.Models;
+using Lemon.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lemon.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.ManagerUser)]
     public class CouponController : Controller
     {
         private readonly ApplicationDbContext _database;

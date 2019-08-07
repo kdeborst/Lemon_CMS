@@ -38,11 +38,17 @@ namespace Lemon
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddDefaultTokenProviders()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddAuthentication().AddFacebook(facebookOptions => {
+                facebookOptions.AppId = "355549655354195";
+                facebookOptions.AppSecret = "8c3a11a62571c247bbe0409d40850e00";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

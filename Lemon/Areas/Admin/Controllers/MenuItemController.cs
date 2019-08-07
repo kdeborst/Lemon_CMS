@@ -10,10 +10,12 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Lemon.Utilities;
 using Lemon.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Lemon.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.ManagerUser)]
     public class MenuItemController : Controller
     {
         private readonly ApplicationDbContext _database;
