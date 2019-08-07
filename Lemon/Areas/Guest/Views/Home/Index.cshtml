@@ -47,21 +47,53 @@
                 <h1 class="display-5 text-warning"><i class="fas fa-lemon"></i>&nbsp;Stap 1: Kies je categorie</h1>
                 <hr />
                 <ul class="category-toggle-list list-inline" id="menu-filters">
-                    <li class="filter active mb-2 ml-1 mr-1">Alle Categorieën</li>
+                    <li class="filter active mb-1 mt-1 ml-1 mr-1" data-filter=".menu-restaurant">Alle Categorieën</li>
                     @foreach (var item in Model.Category)
                     {
-                        <li class="filter ml-1 mr-1">@item.Name</li>
+                        <li class="filter mb-1 mt-1 ml-1 mr-1" data-filter=".@item.Name.Replace(" ",string.Empty)">@item.Name</li>
                     }
                 </ul>
             </div>
             <div>
-            @foreach (var category in Model.Category)
-            {
-                <div id="menu-wrapper" class="row">
-                    <partial name="_ThumbnailAreaPartial" model="@Model.MenuItem.Where(u => u.Category.Name.Equals(category.Name))" />
-                </div>
-            }
+                @foreach (var category in Model.Category)
+                {
+                    <div id="menu-wrapper" class="row">
+                        <partial name="_ThumbnailAreaPartial" model="@Model.MenuItem.Where(u => u.Category.Name.Equals(category.Name))" />
+                    </div>
+                }
             </div>
         </div>
     </div>
 </div>
+
+
+@section Scripts {
+
+    <script>
+        src = "https://code.jquery.com/jquery-3.4.1.js"
+        integrity = "sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin = "anonymous" >
+    </script>
+
+    <script>
+
+        var posts = $('.post');
+
+        (function ($) {
+            $('#menu-filters li').click(function () {
+                $('#menu-filters li').removeClass('active');
+                $(this).addClass('active');
+
+                var selectedFilter = $(this).data('filter');
+
+                $('.menu-restaurant').fadeOut();
+
+                setTimeout(function () {
+                    $(selectedFilter).slideDown();
+                }, 300);
+            });
+        })(jQuery);
+
+    </script>
+
+}
