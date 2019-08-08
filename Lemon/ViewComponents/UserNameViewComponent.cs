@@ -1,9 +1,6 @@
 ﻿using Lemon.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -11,7 +8,6 @@ namespace Lemon.ViewComponents
 {
     public class UserNameViewComponent : ViewComponent
     {
-
         //PROPERTIES
         private readonly ApplicationDbContext _database;
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Lemon.Models
 {
@@ -12,7 +8,7 @@ namespace Lemon.Models
         public int Id { get; set; }
 
         [Required]
-        [Display(Name="Naam Categorie")]
+        [Display(Name = "Naam Categorie")]
         public string Name { get; set; }
     }
 }

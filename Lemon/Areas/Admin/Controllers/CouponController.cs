@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Lemon.Data;
+﻿using Lemon.Data;
 using Lemon.Models;
 using Lemon.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Lemon.Areas.Admin.Controllers
 {
@@ -16,6 +14,7 @@ namespace Lemon.Areas.Admin.Controllers
     [Authorize(Roles = SD.ManagerUser)]
     public class CouponController : Controller
     {
+        //(LOCAL) PROPERTIES
         private readonly ApplicationDbContext _database;
 
 
@@ -41,11 +40,11 @@ namespace Lemon.Areas.Admin.Controllers
 
 
         //ADD: COUPON TO DB
-        [HttpPost,ActionName("Create")]
+        [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCoupon(Coupon coupons)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var files = HttpContext.Request.Form.Files;
 
@@ -74,16 +73,16 @@ namespace Lemon.Areas.Admin.Controllers
 
 
         //LOAD VIEW: COUPON DETAILS
-        public async Task<IActionResult> Details(int ? id)
+        public async Task<IActionResult> Details(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var coupon = await _database.Coupon.FirstOrDefaultAsync(m => m.Id == id);
 
-            if(coupon == null)
+            if (coupon == null)
             {
                 return NotFound();
             }
@@ -93,16 +92,16 @@ namespace Lemon.Areas.Admin.Controllers
 
 
         //LOAD VIEW: CHANGE COUPON
-        public async Task<IActionResult> Change(int ? id)
+        public async Task<IActionResult> Change(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var coupon = await _database.Coupon.SingleOrDefaultAsync(m => m.Id == id);
 
-            if(coupon == null)
+            if (coupon == null)
             {
                 return NotFound();
             }
@@ -112,21 +111,21 @@ namespace Lemon.Areas.Admin.Controllers
 
 
         //CHANGE: COUPON IN DB
-        [HttpPost,ActionName("Change")]
+        [HttpPost, ActionName("Change")]
         public async Task<IActionResult> ChangeCoupon(Coupon coupons)
         {
-            if(coupons.Id == 0)
+            if (coupons.Id == 0)
             {
                 return NotFound();
             }
 
             var couponFromDb = await _database.Coupon.Where(c => c.Id == coupons.Id).FirstOrDefaultAsync();
 
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var files = HttpContext.Request.Form.Files;
 
-                if(files.Count() > 0)
+                if (files.Count() > 0)
                 {
                     byte[] p1 = null;
                     using (var fs1 = files[0].OpenReadStream())
@@ -156,16 +155,16 @@ namespace Lemon.Areas.Admin.Controllers
 
 
         //LOAD VIEW: REMOVE COUPON
-        public async Task<IActionResult> Remove(int ? id)
+        public async Task<IActionResult> Remove(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var coupon = await _database.Coupon.SingleOrDefaultAsync(m => m.Id == id);
 
-            if(coupon == null)
+            if (coupon == null)
             {
                 return NotFound();
             }
@@ -175,7 +174,7 @@ namespace Lemon.Areas.Admin.Controllers
 
 
         //REMOVE: COUPON FROM DB
-        [HttpPost,ActionName("Remove")]
+        [HttpPost, ActionName("Remove")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ConfirmRemove(int id)
         {

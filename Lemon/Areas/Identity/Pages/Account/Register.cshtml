@@ -54,6 +54,7 @@
                 <span class="text-danger" asp-validation-for="Input.ConfirmPassword"></span>
             </div>
 
+            @* OPTIONS FOR MANAGER ROLE *@
             @if (User.IsInRole(SD.ManagerUser))
             {
                 <div class="form-group">
@@ -67,10 +68,16 @@
             <div class="form-group">
                 <button type="submit" class="btn btn-warning form-control">Registreren</button>
             </div>
-            <div class="form-group">
-                <p><a class="text-muted" id="forgot-password" asp-page="./ForgotPassword">Wachtwoord vergeten? Herstel je wachtwoord</a></p>
-                <p><a class="text-muted" asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Heb je al een account? Ga naar Inloggen</a></p>
-            </div>
+
+            @* OPTIONS FOR CUSTOMER (GUEST) ROLES *@
+            @if (User.IsInRole(SD.CustomerUser))
+            {
+                <div class="form-group">
+                    <p><a class="text-muted font-italic" id="forgot-password" asp-page="./ForgotPassword">Wachtwoord vergeten? Herstel je wachtwoord</a></p>
+                    <p><a class="text-muted font-italic" asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Heb je al een account? Ga naar Inloggen</a></p>
+                </div>
+            }
+
         </form>
     </div>
 </div>

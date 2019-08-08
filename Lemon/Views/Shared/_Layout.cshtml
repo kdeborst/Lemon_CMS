@@ -8,11 +8,13 @@
     <title>@ViewData["Title"] - Lemon</title>
 
     <environment include="Development">
+        <link rel="stylesheet" href="~/css/jquery-ui.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap">
     </environment>
     <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/jquery-ui.css" />
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
@@ -35,13 +37,12 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
+                        
+                        @* NAVIGATION FOR MANAGER ROLES *@
                         @if (User.IsInRole(SD.ManagerUser))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-muted" asp-area="Guest" asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i></a>
-                            </li>
                             <li class="nav-item dropdown text-dark">
-                                <a class="nav-link dropdown-toggle text-muted" href="#" id="navbarDropDownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-wrench"></i></a>
+                                <a class="nav-link dropdown-toggle text-muted" href="#" id="navbarDropDownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-wrench"></i> Management</a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropDownMenuLink">
                                     <a class="dropdown-item text-muted" asp-action="Index" asp-controller="Category" asp-area="Admin"><i class="fas fa-tag"></i>&nbsp;&nbsp;Categorie Management</a>
                                     <a class="dropdown-item text-muted" asp-action="Index" asp-controller="SubCategory" asp-area="Admin"><i class="fas fa-tags"></i>&nbsp;&nbsp;Subcategorie Management</a>
@@ -51,8 +52,9 @@
                                 </div>
                             </li>
                         }
+
                         <li style="color: #ffff">
-                            <a href="#" class="nav-link"><i class="fas fa-shopping-cart"></i>&nbsp;(0)</a>
+                            <a href="#" class="nav-link"><i class="fas fa-shopping-cart"></i>&nbsp;(0) Items</a>
                         </li>
                     </ul>
                 </div>
@@ -73,6 +75,7 @@
     </footer>
 
     <environment include="Development">
+        <script src="~/js/jquery-ui.js"></script>
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
         <script src="https://cdn.tiny.cloud/1/4750kwhnukeynt3hp548i51dpmzhrpjfm86whhsqg5l0qjd3/tinymce/5/tinymce.min.js"></script>
@@ -80,17 +83,14 @@
     <environment exclude="Development">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+                asp-fallback-test="window.jQuery">
         </script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
                 asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
         </script>
         <script src="https://cdn.tiny.cloud/1/4750kwhnukeynt3hp548i51dpmzhrpjfm86whhsqg5l0qjd3/tinymce/5/tinymce.min.js"></script>
+        <script src="~/js/jquery-ui.js"></script>
     </environment>
     <script src="~/js/lemon_restaurant.js" asp-append-version="true"></script>
 

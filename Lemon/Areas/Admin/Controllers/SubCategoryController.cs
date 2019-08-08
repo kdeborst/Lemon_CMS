@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Lemon.Data;
+﻿using Lemon.Data;
 using Lemon.Models;
 using Lemon.Models.ViewModels;
 using Lemon.Utilities;
@@ -10,6 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Lemon.Areas.Admin.Controllers
 {
@@ -17,6 +16,7 @@ namespace Lemon.Areas.Admin.Controllers
     [Authorize(Roles = SD.ManagerUser)]
     public class SubCategoryController : Controller
     {
+        //(LOCAL) PROPERTIES
         private readonly ApplicationDbContext _database;
 
         [TempData]
@@ -44,7 +44,7 @@ namespace Lemon.Areas.Admin.Controllers
             SubCategoryAndCategoryViewModel model = new SubCategoryAndCategoryViewModel()
             {
                 CategoryList = await _database.Category.ToListAsync(),
-                SubCategory = new Models.SubCategory(),
+                SubCategory = new SubCategory(),
                 SubCategoryList = await _database.SubCategory.OrderBy(p => p.Name).Select(p => p.Name).Distinct().ToListAsync()
             };
 

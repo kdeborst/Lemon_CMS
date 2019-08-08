@@ -4,6 +4,15 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnet-Lemon-DCB8D903-DA75-4004-AA0D-FE40F2536466</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
+    <Win32Resource />
+    <Authors>Kevin de Borst</Authors>
+    <Company>Lemon Restaurant</Company>
+    <Product>Lemon Restaurant CMS</Product>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://lemonrestaurantcms.azurewebsites.net/</PackageProjectUrl>
+    <PackageIconUrl>wwwroot\favicon.ico</PackageIconUrl>
+    <RepositoryUrl>https://github.com/kdeborst/Lemon_CMS</RepositoryUrl>
   </PropertyGroup>
 
 
@@ -11,6 +20,7 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Sendgrid" Version="9.11.0" />
   </ItemGroup>
 
 </Project>

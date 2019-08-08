@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Lemon.Data;
+﻿using Lemon.Data;
 using Lemon.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Lemon.Areas.Admin.Controllers
 {
@@ -15,6 +14,7 @@ namespace Lemon.Areas.Admin.Controllers
     [Authorize(Roles = SD.ManagerUser)]
     public class AccountController : Controller
     {
+        //(LOCAL) PROPERTIES
         private readonly ApplicationDbContext _database;
 
 
@@ -37,14 +37,14 @@ namespace Lemon.Areas.Admin.Controllers
         //ACTION: LOCK EMPLOYEE ACCOUNTS
         public async Task<IActionResult> Lock(string id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var applicationUser = await _database.ApplicationUser.FirstOrDefaultAsync(m => m.Id == id);
 
-            if(applicationUser == null)
+            if (applicationUser == null)
             {
                 return NotFound();
             }

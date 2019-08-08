@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Lemon.Data;
+﻿using Lemon.Data;
+using Lemon.Models;
 using Lemon.Models.ViewModels;
+using Lemon.Utilities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Hosting;
+using System;
 using System.IO;
-using Lemon.Utilities;
-using Lemon.Models;
-using Microsoft.AspNetCore.Authorization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Lemon.Areas.Admin.Controllers
 {
@@ -18,6 +17,7 @@ namespace Lemon.Areas.Admin.Controllers
     [Authorize(Roles = SD.ManagerUser)]
     public class MenuItemController : Controller
     {
+        //(LOCAL) PROPERTIES
         private readonly ApplicationDbContext _database;
         private readonly IHostingEnvironment _hostingEnvironment;
 
@@ -33,7 +33,7 @@ namespace Lemon.Areas.Admin.Controllers
             MenuItemVM = new MenuItemViewModel()
             {
                 Category = _database.Category,
-                MenuItem = new Models.MenuItem()
+                MenuItem = new MenuItem()
             };
         }
 
@@ -60,7 +60,7 @@ namespace Lemon.Areas.Admin.Controllers
         {
             MenuItemVM.MenuItem.SubCategoryId = Convert.ToInt32(Request.Form["SubCategoryId"].ToString());
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(MenuItemVM);
             }
@@ -75,12 +75,12 @@ namespace Lemon.Areas.Admin.Controllers
             var menuItemFromDb = await _database.MenuItem.FindAsync(MenuItemVM.MenuItem.Id);
 
             //IMAGE UPLOAD VERIFICATIONS
-            if(files.Count() > 0)
+            if (files.Count() > 0)
             {
-                var uploads = Path.Combine(webRootPath,"img");
+                var uploads = Path.Combine(webRootPath, "img");
                 var extension = Path.GetExtension(files[0].FileName);
 
-                using (var filesStream = new FileStream(Path.Combine(uploads,MenuItemVM.MenuItem.Id + extension),FileMode.Create))
+                using (var filesStream = new FileStream(Path.Combine(uploads, MenuItemVM.MenuItem.Id + extension), FileMode.Create))
                 {
                     files[0].CopyTo(filesStream);
                 }
@@ -89,7 +89,7 @@ namespace Lemon.Areas.Admin.Controllers
             }
             else
             {
-                var uploads = Path.Combine(webRootPath,@"img\" + SD.DefaultFoodImage);
+                var uploads = Path.Combine(webRootPath, @"img\" + SD.DefaultFoodImage);
                 System.IO.File.Copy(uploads, webRootPath + @"\img\" + MenuItemVM.MenuItem.Id + ".png");
                 menuItemFromDb.Image = @"\img\" + MenuItemVM.MenuItem.Id + ".png";
             }
@@ -103,14 +103,14 @@ namespace Lemon.Areas.Admin.Controllers
         //LOAD VIEW: DETAILS MENU ITEM
         public async Task<IActionResult> Details(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             MenuItemVM.MenuItem = await _database.MenuItem.Include(m => m.Category).Include(m => m.SubCategory).SingleOrDefaultAsync(m => m.Id == id);
 
-            if(MenuItemVM.MenuItem == null)
+            if (MenuItemVM.MenuItem == null)
             {
                 return NotFound();
             }
@@ -120,9 +120,9 @@ namespace Lemon.Areas.Admin.Controllers
 
 
         //LOAD VIEW: EDIT MENU ITEM
-        public async Task<IActionResult> Change(int ? id)
+        public async Task<IActionResult> Change(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -130,7 +130,7 @@ namespace Lemon.Areas.Admin.Controllers
             MenuItemVM.MenuItem = await _database.MenuItem.Include(m => m.Category).Include(m => m.SubCategory).SingleOrDefaultAsync(m => m.Id == id);
             MenuItemVM.SubCategory = await _database.SubCategory.Where(s => s.CategoryId == MenuItemVM.MenuItem.CategoryId).ToListAsync();
 
-            if(MenuItemVM.MenuItem == null)
+            if (MenuItemVM.MenuItem == null)
             {
                 return NotFound();
             }
@@ -142,10 +142,10 @@ namespace Lemon.Areas.Admin.Controllers
         //CHANGE: MENU ITEM IN DB
         [HttpPost, ActionName("Change")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangeFood(int ? id)
+        public async Task<IActionResult> ChangeFood(int? id)
         {
 
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -173,7 +173,7 @@ namespace Lemon.Areas.Admin.Controllers
 
                 //DELETE ORIGINAL DATA FROM DB
                 var imagePath = Path.Combine(webRootPath, menuItemFromDb.Image.TrimStart('\\'));
-                if(System.IO.File.Exists(imagePath))
+                if (System.IO.File.Exists(imagePath))
                 {
                     System.IO.File.Delete(imagePath);
                 }
@@ -201,9 +201,9 @@ namespace Lemon.Areas.Admin.Controllers
 
 
         //LOAD VIEW: REMOVE FOOD ITEM
-        public async Task<IActionResult> Remove(int ? id)
+        public async Task<IActionResult> Remove(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -227,11 +227,11 @@ namespace Lemon.Areas.Admin.Controllers
             string webRootPath = _hostingEnvironment.WebRootPath;
             MenuItem menuItem = await _database.MenuItem.FindAsync(id);
 
-            if(menuItem != null)
+            if (menuItem != null)
             {
                 var imagePath = Path.Combine(webRootPath, menuItem.Image.TrimStart('\\'));
 
-                if(System.IO.File.Exists(imagePath))
+                if (System.IO.File.Exists(imagePath))
                 {
                     System.IO.File.Delete(imagePath);
                 }
@@ -242,7 +242,6 @@ namespace Lemon.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
 
     }
 }

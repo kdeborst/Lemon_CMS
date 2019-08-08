@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Lemon.Data;
+﻿using Lemon.Data;
 using Lemon.Models;
 using Lemon.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Lemon.Areas.Admin.Controllers
 {
@@ -15,12 +12,16 @@ namespace Lemon.Areas.Admin.Controllers
     [Authorize(Roles = SD.ManagerUser)]
     public class CategoryController : Controller
     {
+        //(LOCAL) PROPERTIES
         private readonly ApplicationDbContext _database;
 
+
+        //CONSTRUCTOR
         public CategoryController(ApplicationDbContext database)
         {
             _database = database;
         }
+
 
         //LOAD VIEW: INDEX - ALL CATEGORIES
         public async Task<IActionResult> Index()
@@ -28,18 +29,20 @@ namespace Lemon.Areas.Admin.Controllers
             return View(await _database.Category.ToListAsync());
         }
 
+
         //LOAD VIEW: CREATE CATEGORY
         public IActionResult Create()
         {
             return View();
         }
 
+
         //ADD: CATEGORY TO DB
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category category)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _database.Category.Add(category);
                 await _database.SaveChangesAsync();
@@ -50,8 +53,9 @@ namespace Lemon.Areas.Admin.Controllers
             return View(category);
         }
 
+
         //LOAD VIEW: CATEGORY DETAILS
-        public async Task<IActionResult> Details(int ? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -68,17 +72,18 @@ namespace Lemon.Areas.Admin.Controllers
             return View(category);
         }
 
+
         //LOAD VIEW: CREATE CATEGORY
-        public async Task<IActionResult> Change(int ? id)
+        public async Task<IActionResult> Change(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var category = await _database.Category.FindAsync(id);
 
-            if(category == null)
+            if (category == null)
             {
                 return NotFound();
             }
@@ -86,12 +91,13 @@ namespace Lemon.Areas.Admin.Controllers
             return View(category);
         }
 
-        //CHANGE CATEGORY IN DB
+
+        //CHANGE: CATEGORY IN DB
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Change(Category category)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _database.Update(category);
                 await _database.SaveChangesAsync();
@@ -102,8 +108,9 @@ namespace Lemon.Areas.Admin.Controllers
             return View(category);
         }
 
+
         //LOAD VIEW: REMOVE CATEGORY
-        public async Task<IActionResult> Remove(int ? id)
+        public async Task<IActionResult> Remove(int? id)
         {
             if (id == null)
             {
@@ -120,6 +127,7 @@ namespace Lemon.Areas.Admin.Controllers
             return View(category);
         }
 
+
         //REMOVE: CATEGORY FROM DB
         [HttpPost, ActionName("Remove")]
         [ValidateAntiForgeryToken]
@@ -127,9 +135,9 @@ namespace Lemon.Areas.Admin.Controllers
         {
             var category = await _database.Category.FindAsync(id);
 
-            if(category == null)
+            if (category == null)
             {
-                return View(); 
+                return View();
             }
 
             _database.Category.Remove(category);
