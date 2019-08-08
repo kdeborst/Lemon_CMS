@@ -49,6 +49,11 @@ namespace Lemon
                 facebookOptions.AppId = "355549655354195";
                 facebookOptions.AppSecret = "8c3a11a62571c247bbe0409d40850e00";
             });
+
+            services.AddAuthentication().AddGoogle(googleOptions => {
+                googleOptions.ClientId = "476759903258-hi0jbu0d35l86t42vl1kv35fvrchh7e3.apps.googleusercontent.com";
+                googleOptions.ClientSecret = "Xg1CSGE4hofFYlQR8ULyrZal";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
